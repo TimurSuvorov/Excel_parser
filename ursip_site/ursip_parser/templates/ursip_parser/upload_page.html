@@ -19,7 +19,7 @@ table {
 }
 th, td {
     text-align: center;
-    padding: 8px;
+    padding: 2px;
     border: 1px solid #ddd;
 }
 th {
@@ -30,8 +30,11 @@ th {
 
 <body>
 <main>
+    <h1>Парсинг и загрузка в БД</h1>
+    <a href="{% url 'show_db' %}">Просмотр всех данных БД</a>
     <form action="{% url 'load_parse' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
+        <p></p>
         <div class="form-group" >
             <label for="upload_file">Загрузка файла для парсинга</label>
             <input type="file"
@@ -58,6 +61,7 @@ th {
         {% endif %}
         <p>
         {% if parsed_html %}
+            <h3>Загруженные данные:</h3>
             {% autoescape off %}
                 {{ parsed_html }}
             {% endautoescape %}
@@ -65,6 +69,7 @@ th {
         </p>
         <p>
         {% if pivoted_html %}
+            <h3>Сводка загруженных данных:</h3>
             {% autoescape off %}
                 {{ pivoted_html }}
             {% endautoescape %}

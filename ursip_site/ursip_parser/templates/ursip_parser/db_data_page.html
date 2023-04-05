@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DB data</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<style>
+
+main {
+margin: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    font-size: small;
+}
+th, td {
+    text-align: center;
+    padding: 2px;
+    border: 1px solid #ddd;
+}
+th {
+    background-color: #f2f2f2;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+</style>
+
+<body>
+<main>
+    <h1>Информация из БД</h1>
+    <a href="{% url 'load_parse' %}">Парсинг и загрузка новых данных в БД</a>
+    <form method="post" action="{% url 'clear_db' %}">
+        {% csrf_token %}
+        <p></p>
+        <div class="form-group">
+            <div id="id_btn_clear">
+                <input type="submit"
+                       class="btn-sm btn-danger"
+                       value="Очистить БД">
+            </div>
+        <div>
+    </form>
+    <hr>
+
+    <div class="printout">
+        {% if error_message %}
+            <h3>Ошибка обработки данных:</h3>
+            <p>{{ error_message }}</p>
+        {% endif %}
+        {% if info_message %}
+            <h4>{{ info_message }}</h4>
+        {% endif %}
+        <div id="id_db_data">
+        {% if parsed_db_html %}
+            <h3>Все данные:</h3>
+            {% autoescape off %}
+                {{ parsed_db_html }}
+            {% endautoescape %}
+        {% endif %}
+        </div>
+        <div id="id_pivot_data">
+        {% if pivoted_db_html %}
+        <h3>Сводка всех данных:</h3>
+            {% autoescape off %}
+                {{ pivoted_db_html }}
+            {% endautoescape %}
+        {% endif %}
+        </div>
+    </div>
+</main>
+
+<script>
+
+    const btn_clear = document.querySelector('#id_btn_clear');
+    const db_data = document.querySelector('#id_db_data')
+
+    if (!db_data.innerText) {
+        btn_clear.classList.toggle("disabled")
+    }
+
+    btn_clear.addEventListener('click', () => {
+        confirm("Вы уверены, что хотите удалить всё безвозвратно?")
+    })
+</script>
+</body>
+</html>
