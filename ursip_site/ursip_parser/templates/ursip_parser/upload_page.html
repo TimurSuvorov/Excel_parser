@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Parser</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<style>
+
+main {
+margin: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    font-size: small;
+}
+th, td {
+    text-align: center;
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+th {
+    background-color: #f2f2f2;
+}
+
+</style>
+
+<body>
+<main>
+    <form action="{% url 'load_parse' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+        <div class="form-group" >
+            <label for="upload_file">Загрузка файла для парсинга</label>
+            <input type="file"
+                   class="form-control-file"
+                   title="Загрузка файла"
+                   name="uploaded_file"
+                   accept=".xlsx, .xls"
+                   id="upload_file"
+                   required>
+
+        </div>
+        <div>
+                <input type="submit"
+                class="btn-sm btn-primary"
+                value="Распарсить">
+        </div>
+    </form>
+    <hr>
+
+    <div class="printout">
+        {% if error_message %}
+            <h3>Неуспешная попытка парсинга файла</h3>
+            <p>{{ error_message }}</p>
+        {% endif %}
+        <p>
+        {% if parsed_html %}
+            {% autoescape off %}
+                {{ parsed_html }}
+            {% endautoescape %}
+        {% endif %}
+        </p>
+        <p>
+        {% if pivoted_html %}
+            {% autoescape off %}
+                {{ pivoted_html }}
+            {% endautoescape %}
+        {% endif %}
+        </p>
+    </div>
+</main>
+</body>
+</html>
