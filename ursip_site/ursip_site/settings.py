@@ -28,7 +28,7 @@ else:
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*3r^+m1^1@p=*@!4++-p8yz*jzu^sum%zx@2gvoxn&ljp3xn7k'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', default='only_for_test')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
